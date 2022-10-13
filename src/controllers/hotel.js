@@ -1,11 +1,24 @@
-const {Hotel , Location, ServicesHotel, ServicesRoom, Room, CategoryRoom,Event} = require('../db')
+const {Hotel , Location, ServicesHotel, ServicesRoom, Room,Event} = require('../db')
 
 const {Op} = require('sequelize')
 
 
 async function getHotelByName(name){
     try {
-        let hotelFinded = await Hotel.findOne({ where: {name: {[Op.iLike]: `%${name}%`}}})
+        let hotelFinded = await Hotel.findAll({ where: {name: {[Op.iLike]: `%${name}%`}},
+        include: [{
+            model: Location,
+            attributes: ['city', 'country','continent'],
+            through: {
+                attributes: []
+            }
+        },{
+            model: Room,
+            attributes: ['name','image','discount','price','description','available','category'],
+            through: {
+                attributes: []
+            }
+        }]})
         
         if(hotelFinded){
             return hotelFinded 
@@ -18,7 +31,19 @@ async function getHotelByName(name){
 
 async function getAllHotels(){
     try {  
-    let hotelsAll = await Hotel.findAll()
+    let hotelsAll = await Hotel.findAll({ include: [{
+        model: Location,
+        attributes: ['city', 'country','continent'],
+        through: {
+            attributes: []
+        }
+    },{
+        model: Room,
+        attributes: ['name','image','discount','price','description','available','category'],
+        through: {
+            attributes: []
+        }
+    }]})
 
     let result =  hotelsAll ? hotelsAll : 'No hotels found'
         return result
@@ -29,7 +54,19 @@ async function getAllHotels(){
 
 async function getHotelById(id){
     try {
-        let hotelFinded = await Hotel.findByPk(id)
+        let hotelFinded = await Hotel.findByPk({id},{ include: [{
+            model: Location,
+            attributes: ['city', 'country','continent'],
+            through: {
+                attributes: []
+            }
+        },{
+            model: Room,
+            attributes: ['name','image','discount','price','description','available','category'],
+            through: {
+                attributes: []
+            }
+        }]})
 
         if(hotelFinded){
             return hotelFinded 
