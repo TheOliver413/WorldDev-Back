@@ -38,14 +38,14 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 
-const { Hotel , Location, ServicesHotel, ServicesRoom, Room, CategoryRoom, Event} = sequelize.models;
+const { Hotel , Location, ServicesHotel, ServicesRoom, Room, Event} = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 
 //UNO A MUCHOS
-Room.hasMany(CategoryRoom);
-CategoryRoom.belongsTo(Room);
+// Room.hasMany(CategoryRoom,{foreignKey: "CategoryId"});
+// CategoryRoom.belongsTo(Room);
 
 //MUCHOS A MUCHOS
 Hotel.belongsToMany(Location, {through: 'Hotel_Location'})

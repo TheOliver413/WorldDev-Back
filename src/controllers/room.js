@@ -1,8 +1,9 @@
-const {Hotel , Location, ServicesHotel, ServicesRoom, Room, CategoryRoom} = require('../db')
+const {Hotel , Location, ServicesHotel, ServicesRoom, Room} = require('../db')
+const {Op} = require('sequelize')
 
-async function getRoomsByName(name){
+async function getRoomsByName(){
     try {
-        let roomFinded = await Room.findOne({where: {name: name}})
+        let roomFinded = await Room.findAll()
 
         if(roomFinded){
             return roomFinded 
@@ -13,17 +14,19 @@ async function getRoomsByName(name){
     }
 }
 
-async function getAllRooms(){
-    try {  
-    let roomsAll = await Room.findAll()
+//Busca el hotel por ID y trae las rooms de ese hotel
+// async function getAllRoomsOfHotel(id){
+//     try {  
+//     let hotelFinded = await Hotel.findByPk(id)
+//     let roomsAll = hotelFinded.getRooms()    
 
-    let result =  roomsAll.lenght > 0 ? roomsAll : 'No rooms found'
-        return result
-    } catch (error) {
-        console.log(error)
-    }
-}
-
+//     let result =  roomsAll ? roomsAll : 'No rooms found'
+//         return result
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+//Busca una room por ID
 async function getRoomById(id){
     try {
         let roomFinded = await Room.findByPk(id)
@@ -36,28 +39,33 @@ async function getRoomById(id){
         console.log(error)
     }
 }
-
-async function createRoom({idHotel,name, image, discount, description, price, available, servicesRoom, categoryRoom}){
-    let hotelFinded = await Hotel.findByPk(idHotel)
+//----------------------Crea una room-----------------------------
+async function createRoom({idHotel,name, image, discount, description, price, available, servicesRoom, category}){
+    try {
+        let hotelFinded = await Hotel.findByPk(idHotel)
 
     let roomCreated = await Room.create({
-        name, image, discount, description, price, available
+        name, image, discount, description, price, available,category
     })
-    let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
-    let categoryFinded = await CategoryRoom.findAll({where: {name: categoryRoom}})
+    
+    // let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
 
     hotelFinded.addRoom(roomCreated)
-    hotelFinded.addServicesRooms(servicesFinded)
-    hotelFinded.addCategoryRoom(categoryFinded)
+    // hotelFinded.addServicesRooms(servicesFinded)
+    
 
     return 'Room created'
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
-async function updateRoom({id,name, image, discount, description, price}){
+async function updateRoom({id,name, image, discount, description, price,available,category}){
     await Room.update({
-        name, image, discount, description, price
+        name, image, discount, description, price,available,category
     },{
-        where:{_id: id}
+        where:{id: id}
     })
     return 'Update Succes'
 }
@@ -65,7 +73,7 @@ async function updateRoom({id,name, image, discount, description, price}){
 async function deleteRoom(id){
     await Room.destroy({
         where:{
-            _id: id
+            id: id
         }
     })
     return 'Deleted'
@@ -73,7 +81,7 @@ async function deleteRoom(id){
 
 module.exports = {
     getRoomsByName,
-    getAllRooms,
+    // getAllRoomsOfHotel,
     getRoomById,
     createRoom,
     deleteRoom,
