@@ -3,7 +3,7 @@ const { Router } = require('express');
 const router = Router();
 
 
-// router.use('/filtersH', filtersHRoutes)
-// router.use('/filtersR', filtersRRoutes)
+ router.use('/filtersHotels', filtersHRoutes)
+ router.use('/filtersRooms', filtersRRoutes)
 
 module.exports = router;
