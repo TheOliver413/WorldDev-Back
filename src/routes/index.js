@@ -3,10 +3,12 @@ const { Router } = require('express');
 const router = Router();
 const roomRoutes = require('../middlewares/roomRoutes')
 const hotelRoutes = require('../middlewares/hotelRoutes')
-// router.use('/filtersH', filtersHRoutes)
-// router.use('/filtersR', filtersRRoutes)
+const filtersHRoutes = require('../middlewares/filtersHRoutes')
+const filtersRRoutes = require('../middlewares/filtersRRoutes')
 
 router.use('/rooms',roomRoutes)
 router.use('/hotels', hotelRoutes)
+router.use('/filtersHotels', filtersHRoutes)
+router.use('/filtersRooms', filtersRRoutes)
 
 module.exports = router;
