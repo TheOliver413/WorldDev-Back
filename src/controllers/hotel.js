@@ -3,7 +3,7 @@ const {Hotel , Location, ServicesHotel, ServicesRoom, Room,Event} = require('../
 const {Op} = require('sequelize')
 
 
-async function getHotelByName(page,name){
+async function getHotelByName(name){
     try {
         let hotelFinded = await Hotel.findAll({ where: {name: {[Op.iLike]: `%${name}%`}},
         include: [{
@@ -18,10 +18,7 @@ async function getHotelByName(page,name){
             through: {
                 attributes: []
             }
-        }],
-        limit: 8,
-        offset: page, 
-    })
+        }]})
         
         if(hotelFinded){
             return hotelFinded 
@@ -32,7 +29,7 @@ async function getHotelByName(page,name){
     }
 }
 
-async function getAllHotels(page){
+async function getAllHotels(){
     try {  
     let hotelsAll = await Hotel.findAll({ include: [{
         model: Location,
@@ -46,10 +43,7 @@ async function getAllHotels(page){
         through: {
             attributes: []
         }
-    }],
-    limit: 8,
-    offset: page, 
-})
+    }]})
 
     let result =  hotelsAll ? hotelsAll : 'No hotels found'
         return result
@@ -60,7 +54,7 @@ async function getAllHotels(page){
 
 async function getHotelById(id){
     try {
-        let hotelFinded = await Hotel.findByPk(id,{ include: [{
+        let hotelFinded = await Hotel.findByPk({id},{ include: [{
             model: Location,
             attributes: ['city', 'country','continent'],
             through: {
