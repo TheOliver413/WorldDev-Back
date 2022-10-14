@@ -1,6 +1,6 @@
 const {Router} = require('express')
 const {Room} = require('../db')
-const {} = require('../controllers/room')
+const {createServiceH} = require('../controllers/servicesHotel')
 
 const router = Router()
 
