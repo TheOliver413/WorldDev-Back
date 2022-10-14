@@ -5,12 +5,12 @@ const {getAllHotels, getHotelByName, getHotelById ,createHotel, updateHotel, del
 const router = Router()
 
 router.get('', async (req, res, next)=>{
-    const {name} = req.query
+    const {name, page} = req.query
     try {
         if(name){
-           return res.json(await getHotelByName(name)) 
+           return res.json(await getHotelByName(page,name)) 
         }else{
-            return res.json(await getAllHotels())
+            return res.json(await getAllHotels(page))
         }
     } catch (error) {
         next(error)
