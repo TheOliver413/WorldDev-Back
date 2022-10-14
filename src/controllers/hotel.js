@@ -60,7 +60,7 @@ async function getAllHotels(page){
 
 async function getHotelById(id){
     try {
-        let hotelFinded = await Hotel.findByPk({id},{ include: [{
+        let hotelFinded = await Hotel.findByPk(id,{ include: [{
             model: Location,
             attributes: ['city', 'country','continent'],
             through: {
