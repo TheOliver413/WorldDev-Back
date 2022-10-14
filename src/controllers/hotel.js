@@ -14,7 +14,7 @@ async function getHotelByName(name){
             }
         },{
             model: Room,
-            attributes: ['name','image','discount','price','description','available','category'],
+            attributes: ['id','name','image','discount','price','description','available','category'],
             through: {
                 attributes: []
             }
@@ -39,7 +39,7 @@ async function getAllHotels(){
         }
     },{
         model: Room,
-        attributes: ['name','image','discount','price','description','available','category'],
+        attributes: ['id','name','image','discount','price','description','available','category'],
         through: {
             attributes: []
         }
@@ -54,7 +54,7 @@ async function getAllHotels(){
 
 async function getHotelById(id){
     try {
-        let hotelFinded = await Hotel.findByPk({id},{ include: [{
+        let hotelFinded = await Hotel.findByPk(id,{ include: [{
             model: Location,
             attributes: ['city', 'country','continent'],
             through: {
@@ -62,7 +62,7 @@ async function getHotelById(id){
             }
         },{
             model: Room,
-            attributes: ['name','image','discount','price','description','available','category'],
+            attributes: ['id','name','image','discount','price','description','available','category'],
             through: {
                 attributes: []
             }
