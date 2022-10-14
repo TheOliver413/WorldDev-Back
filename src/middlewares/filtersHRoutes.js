@@ -30,10 +30,10 @@ router.get('/location', async (req, res, next) => {
 
 //// FILTRADO HOTEL POR SERVICES ////
 router.get('/services', async (req, res, next) => {
-    const { filter, page } = req.query
+    const { id, filter, page } = req.query
     
     try {
-        const hotels = await Hotel.findAll({ include: {
+        const hotels = await Hotel.findAll({where: {id:id}},{include: {
           model: ServicesHotel,
           attributes: ['name', 'description','image'],
           through: {
