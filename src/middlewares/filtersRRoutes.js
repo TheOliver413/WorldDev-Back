@@ -4,7 +4,7 @@ const { Room } = require('../db.js')
 
 //// FILTRADO ROOM POR SERVICES ////
 router.get('/services', async (req, res, next) => {
-    const { id, filter, page } = req.query
+    const { id, filter } = req.query
     
     try {
         const rooms = await Room.findAll({where:{id: id}},{ include: {
@@ -13,10 +13,7 @@ router.get('/services', async (req, res, next) => {
           through: {
               attributes: []
           }
-      },
-        limit: 8,
-        offset: page,    
-    
+      }  
     })
         const filterServices = rooms?.filter(e => e.ServicesRooms?.find(e => (e.name) === filter))
         filterServices? res.json(filterServices) : res.send('no rooms were found with that services')
@@ -27,7 +24,7 @@ router.get('/services', async (req, res, next) => {
 
 //// FILTRADO ROOM POR AVAILABLE ////
 router.get('/available', async (req, res, next) => {
-    const { id, filter, page } = req.query
+    const { id, filter } = req.query
     
     try {
       const rooms = await Room.findAll({where:{id: id}},{ include: {
@@ -36,10 +33,7 @@ router.get('/available', async (req, res, next) => {
         through: {
             attributes: []
         }
-    },
-      limit: 8,
-      offset: page,    
-  
+    } 
   })
       const filterAvailable = rooms?.filter(e => e.available === filter)
       filterAvailable? res.json(filterAvailable) : res.send('no available rooms found')
