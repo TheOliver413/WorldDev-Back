@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
             unique: true,
         },
         image: {
-            type: DataTypes.TEXT,
+            type: DataTypes.ARRAY(DataTypes.TEXT),
         },
         qualification: {
             type: DataTypes.INTEGER,

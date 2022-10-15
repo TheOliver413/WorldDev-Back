@@ -32,11 +32,14 @@ async function createServiceH({ idHotel, name, description, image }) {
     try {
         let hotelFinded = await Hotel.findByPk(idHotel)
 
-        let serviceHCreated = await ServicesHotel.create({
+        let [serviceHCreated, servicesHo] = await ServicesHotel.findOrCreate({where:{name},defaults:{
             name: name, description:description, image:image
-        })
+        }})
+        // let [locationCreated, locationC] = await Location.findOrCreate({where:{city},defaults:{
+        //     city, continent, country
+        // }})
 
-        hotelFinded.addServicesHotel(serviceHCreated)
+        hotelFinded.addServicesHotels(serviceHCreated)
         // hotelFinded.addServicesRooms(servicesFinded)
 
         return 'ServiceH created'

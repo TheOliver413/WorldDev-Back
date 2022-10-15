@@ -18,6 +18,12 @@ async function getHotelByName(name){
             through: {
                 attributes: []
             }
+        },{
+            model: ServicesHotel,
+            attributes: ['id','name','image','description'],
+            through: {
+                attributes: []
+            }
         }]})
         
         if(hotelFinded){
@@ -40,6 +46,12 @@ async function getAllHotels(){
     },{
         model: Room,
         attributes: ['id','name','image','discount','price','description','available','category'],
+        through: {
+            attributes: []
+        }
+    },{
+        model: ServicesHotel,
+        attributes: ['id','name','image','description'],
         through: {
             attributes: []
         }
@@ -66,6 +78,12 @@ async function getHotelById(id){
             through: {
                 attributes: []
             }
+        },{
+            model: ServicesHotel,
+            attributes: ['id','name','image','description'],
+            through: {
+                attributes: []
+            }
         }]})
 
         if(hotelFinded){
@@ -87,14 +105,24 @@ async function createHotel({name, image, qualification, description, city, conti
         city, continent, country
     }})
     
-    // let servicesFinded = await ServicesHotel.findAll({where: {name: servicesHotel}})
+    if(servicesHotel){
+        servicesHotel.map(async (e) => {
+            let [servicesCreated, servicesH] = await ServicesHotel.findOrCreate({where:{name: e.name},defaults:{
+            name: e.name,
+            description: e.description,
+            image: e.image
+        }})
+            hotelCreated.addServicesHotels(servicesCreated) 
+        })
+        
+    }
     // let eventFinded = await Event.findAll({where: {name: event}})
 
-    // hotelCreated.addServicesHotels(servicesFinded)
+    
     // hotelCreated.addEvents(eventFinded)
     hotelCreated.addLocation(locationCreated)
 
-    return 'Hotel created'
+    return hotelCreated
 }
 
 async function updateHotel({id,name, image, qualification, description, city, continent, country, servicesHotel, event}){

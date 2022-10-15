@@ -3,7 +3,13 @@ const {Op} = require('sequelize')
 
 async function getRoomsByName(){
     try {
-        let roomFinded = await Room.findAll()
+        let roomFinded = await Room.findAll({include: {
+            model: ServicesRoom,
+            attributes: ['id', 'name','image'],
+            through: {
+                attributes: []
+            }
+        }})
 
         if(roomFinded){
             return roomFinded 
@@ -29,7 +35,13 @@ async function getRoomsByName(){
 //Busca una room por ID
 async function getRoomById(id){
     try {
-        let roomFinded = await Room.findByPk(id)
+        let roomFinded = await Room.findByPk(id,{include: {
+            model: ServicesRoom,
+            attributes: ['id', 'name','image'],
+            through: {
+                attributes: []
+            }
+        }})
 
         if(roomFinded){
             return roomFinded 
