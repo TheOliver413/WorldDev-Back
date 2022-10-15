@@ -49,19 +49,19 @@ async function createServiceH({ idHotel, name, description, image }) {
 
 }
 
-async function updateServiceH({id, name, description, image}){
+async function updateServiceH({idHotel, name, description, image}){
     await ServicesHotel.update({
-        id:id, name:name, description:description, image:image
+        id:idHotel, name:name, description:description, image:image
     },{
-        where:{id: id}
+        where:{id: idHotel}
     })
     return 'Update Succes'
 }
 
-async function deleteServiceH(id){
+async function deleteServiceH(idHotel){
     await ServicesHotel.destroy({
         where:{
-            id: id
+            id: idHotel
         }
     })
     return 'Deleted'
