@@ -28,7 +28,7 @@ async function getServiceRoomById(id){
     }
 }
 
-async function createServiceRoom({ idRoom, name, image }) {
+async function createServiceRoom({idRoom, name, image}) {
     try {
         let roomFinded = await Room.findByPk(idRoom)
 
@@ -45,19 +45,19 @@ async function createServiceRoom({ idRoom, name, image }) {
 
 }
 
-async function updateServiceRoom({id, name, image}){
+async function updateServiceRoom({idRoom, name, image}){
     await ServicesRoom.update({
-        id:id, name:name, image:image
+        id:idRoom, name:name, image:image
     },{
-        where:{id: id}
+        where:{id: idRoom}
     })
     return 'Update Succes'
 }
 
-async function deleteServiceRoom(id){
+async function deleteServiceRoom(idRoom){
     await ServicesRoom.destroy({
         where:{
-            id: id
+            id: idRoom
         }
     })
     return 'Deleted'
