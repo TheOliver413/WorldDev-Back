@@ -7,7 +7,7 @@ const router = Router()
 router.get('', async (req, res, next)=>{
     const {name} = req.query
     try {
-          return res.json(await getServiceHname(name)) 
+          return res.json(await getServiceHname()) 
     } catch (error) {
         next(error)
     }
