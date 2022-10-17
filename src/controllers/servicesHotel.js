@@ -41,7 +41,7 @@ async function getHotelServiceById(id){
         if(hotelServicesFinded){
             return hotelServicesFinded.ServicesHotels
         }
-            return 'No rooms found'
+            return 'No Services found'
     } catch (error) {
         console.log(error)
     }
