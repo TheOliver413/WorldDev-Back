@@ -15,7 +15,7 @@ async function getServiceHname(){
     }
 }
 
-async function getServiceHById(id){
+async function getServiceById(id){
     try {
         let servicesHFinded = await ServicesHotel.findByPk(id)
 
@@ -28,40 +28,55 @@ async function getServiceHById(id){
     }
 }
 
+async function getHotelServiceById(id){
+    try {
+        let hotelServicesFinded = await Hotel.findByPk(id,{ include: [{
+            model: ServicesHotel,
+            attributes: ['id','name','image','description'],
+            through: {
+                attributes: []
+            }
+        }]})
+
+        if(hotelServicesFinded){
+            return hotelServicesFinded.ServicesHotels
+        }
+            return 'No rooms found'
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 async function createServiceH({ idHotel, name, description, image }) {
     try {
         let hotelFinded = await Hotel.findByPk(idHotel)
-
-        let [serviceHCreated, servicesHo] = await ServicesHotel.findOrCreate({where:{name},defaults:{
-            name: name, description:description, image:image
-        }})
-        // let [locationCreated, locationC] = await Location.findOrCreate({where:{city},defaults:{
-        //     city, continent, country
-        // }})
-
+        
+        let serviceHCreated = await ServicesHotel.create({
+            name:name, description:description, image:image
+        })
+        
         hotelFinded.addServicesHotels(serviceHCreated)
-        // hotelFinded.addServicesRooms(servicesFinded)
 
         return 'ServiceH created'
     } catch (error) {
         console.log(error)
     }
-
 }
 
-async function updateServiceH({idHotel, name, description, image}){
-    await ServicesHotel.update({
-        id:idHotel, name:name, description:description, image:image
-    },{
-        where:{id: idHotel}
+async function updateServiceH({id, name, description, image}){
+    
+    await ServicesHotel.update({name:name, description:description, image:image},{
+            where:{
+                id: id
+            }
     })
     return 'Update Succes'
 }
 
-async function deleteServiceH(idHotel){
+async function deleteServiceH(id){
     await ServicesHotel.destroy({
         where:{
-            id: idHotel
+            id: id
         }
     })
     return 'Deleted'
@@ -69,8 +84,9 @@ async function deleteServiceH(idHotel){
 
 
 module.exports = {
+    getHotelServiceById,
     getServiceHname,
-    getServiceHById,
+    getServiceById,
     createServiceH,
     updateServiceH,
     deleteServiceH

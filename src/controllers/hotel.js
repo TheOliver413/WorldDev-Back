@@ -24,12 +24,18 @@ async function getHotelByName(name){
             through: {
                 attributes: []
             }
+        },{
+            model: Event,
+            attributes: ['id','name','image','description', 'date', 'price'],
+            through: {
+                attributes: []
+            }
         }]})
         
-        if(hotelFinded){
+        if(hotelFinded.length > 0){
             return hotelFinded 
         }
-            return 'No hotels found'
+        throw new Error('No hotels found!', { statusCode: 404 })
     } catch (error) {
         console.log(error)
     }
@@ -52,6 +58,12 @@ async function getAllHotels(){
     },{
         model: ServicesHotel,
         attributes: ['id','name','image','description'],
+        through: {
+            attributes: []
+        }
+    },{
+        model: Event,
+        attributes: ['id','name','image','description', 'date', 'price'],
         through: {
             attributes: []
         }
@@ -81,6 +93,12 @@ async function getHotelById(id){
         },{
             model: ServicesHotel,
             attributes: ['id','name','image','description'],
+            through: {
+                attributes: []
+            }
+        },{
+            model: Event,
+            attributes: ['id','name','image','description', 'date', 'price'],
             through: {
                 attributes: []
             }
