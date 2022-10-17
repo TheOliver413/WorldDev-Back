@@ -8,12 +8,17 @@ router.get('', async (req, res, next)=>{
     const {name} = req.query
     try {
         if(name){
-           return res.json(await getHotelByName(name)) 
+            let result = await getHotelByName(name)
+            if(typeof result !== 'object'){
+                return res.status(404).send(result)
+            }else{
+                return res.json(result)
+            }
         }else{
             return res.json(await getAllHotels())
         }
     } catch (error) {
-        next(error)
+        console.log(error)
     }
 })
 

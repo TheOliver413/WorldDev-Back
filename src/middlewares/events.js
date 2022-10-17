@@ -1,12 +1,12 @@
 const {Router} = require('express')
-const {Room} = require('../db')
-const {createServiceRoom, getAllServices, getServiceRoomById, updateServiceRoom, deleteServiceRoom} = require('../controllers/servicesHotel')
+const {createEvent, getEventByName, getEventById, updateEvent, deleteEvent,getHotelEventsById} = require('../controllers/events')
 
 const router = Router()
 
 router.get('', async (req, res, next)=>{
+    const {name} = req.query
     try {
-          return res.json(await getAllServices()) 
+          return res.json(await getEventByName(name)) 
     } catch (error) {
         next(error)
     }
@@ -15,7 +15,16 @@ router.get('', async (req, res, next)=>{
 router.get('/:id', async (req, res, next)=>{
     const {id} = req.params
     try {
-        return res.json(await getServiceRoomById(id))
+        return res.json(await getEventById(id))
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get('/hotel/:id', async (req, res, next)=>{
+    const {id} = req.params
+    try {
+        return res.json(await getHotelEventsById(id))
     } catch (error) {
         next(error)
     }
@@ -24,7 +33,7 @@ router.get('/:id', async (req, res, next)=>{
 router.post('', async (req, res, next)=>{
     
     try {
-        return res.json( await createServiceRoom(req.body))
+        return res.json( await createEvent(req.body))
     } catch (error) {
         next(error)
     }
@@ -32,7 +41,7 @@ router.post('', async (req, res, next)=>{
 
 router.put('/', async(req,res,next)=>{
     try {
-        res.json( await updateServiceRoom(req.body))
+        res.json( await updateEvent(req.body))
     } catch (error) {
         next(error)
     } 
@@ -41,7 +50,7 @@ router.put('/', async(req,res,next)=>{
 router.delete('/:id', async(req,res,next) =>{
     const {id} = req.params
     try {
-        return res.send(await deleteServiceRoom(id))
+        return res.send(await deleteEvent(id))
     } catch (error) {
         next(error)
     }

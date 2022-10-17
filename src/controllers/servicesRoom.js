@@ -2,7 +2,7 @@ const { Hotel, Location, ServicesHotel, ServicesRoom, Room, Event } = require('.
 
 const { Op } = require('sequelize')
 
-async function getServiceRoomByName(){
+async function getAllServices(){
     try {
         let servicesRoomFinded = await ServicesRoom.findAll()
 
@@ -32,7 +32,7 @@ async function createServiceRoom({idRoom, name, image}) {
     try {
         let roomFinded = await Room.findByPk(idRoom)
 
-        let serviceRoomCreated = await ServicesRoom.create({
+        let serviceRoomCreated = await ServicesRoom.findOrCreate({ where: {name: {[Op.iLike]: name}}},{
             name: name, image:image
         })
 
@@ -42,14 +42,13 @@ async function createServiceRoom({idRoom, name, image}) {
     } catch (error) {
         console.log(error)
     }
-
 }
 
-async function updateServiceRoom({idRoom, name, image}){
+async function updateServiceRoom({id, name, image}){
     await ServicesRoom.update({
-        id:idRoom, name:name, image:image
+        id:id, name:name, image:image
     },{
-        where:{id: idRoom}
+        where:{id: id}
     })
     return 'Update Succes'
 }
@@ -66,7 +65,7 @@ async function deleteServiceRoom(idRoom){
 
 module.exports = {
     createServiceRoom, 
-    getServiceRoomByName, 
+    getAllServices, 
     getServiceRoomById,
      updateServiceRoom, 
      deleteServiceRoom
