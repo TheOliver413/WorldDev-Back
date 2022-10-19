@@ -26,7 +26,7 @@ async function getHotelByName(name){
             }
         },{
             model: Event,
-            attributes: ['id','name','image','description', 'date', 'price'],
+            attributes: ['id','name','image','description', 'date'],
             through: {
                 attributes: []
             }
@@ -63,7 +63,7 @@ async function getAllHotels(){
         }
     },{
         model: Event,
-        attributes: ['id','name','image','description', 'date', 'price'],
+        attributes: ['id','name','image','description', 'date'],
         through: {
             attributes: []
         }
@@ -98,7 +98,7 @@ async function getHotelById(id){
             }
         },{
             model: Event,
-            attributes: ['id','name','image','description', 'date', 'price'],
+            attributes: ['id','name','image','description', 'date'],
             through: {
                 attributes: []
             }
