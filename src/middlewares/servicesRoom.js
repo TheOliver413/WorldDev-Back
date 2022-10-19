@@ -1,6 +1,6 @@
 const {Router} = require('express')
 const {Room} = require('../db')
-const {createServiceRoom, getAllServices, getServiceRoomById, updateServiceRoom, deleteServiceRoom} = require('../controllers/servicesHotel')
+const {createServiceRoom, getAllServices, getServiceRoomById, updateServiceRoom, deleteServiceRoom} = require('../controllers/servicesRoom')
 
 const router = Router()
 
