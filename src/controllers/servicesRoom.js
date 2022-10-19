@@ -47,7 +47,7 @@ async function createServiceRoom({id, name, image}) {
 
 async function updateServiceRoom({id, name, image}){
     await ServicesRoom.update({
-        id:id, name:name, image:image
+       name:name, image:image
     },{
         where:{id: id}
     })
