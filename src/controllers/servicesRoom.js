@@ -22,18 +22,18 @@ async function getServiceRoomById(id){
         if(servicesRoomFinded){
             return servicesRoomFinded 
         }
-            return 'No rooms found'
+            return 'No services rooms found'
     } catch (error) {
         console.log(error)
     }
 }
 
-async function createServiceRoom({idRoom, name, image}) {
+async function createServiceRoom({id, name, image}) {
     try {
-        let roomFinded = await Room.findByPk(idRoom)
+        let roomFinded = await Room.findByPk(id)
 
         let serviceRoomCreated = await ServicesRoom.findOrCreate({ where: {name: {[Op.iLike]: name}}},{
-            name: name, image:image
+            name:name, image:image
         })
 
         roomFinded.addServicesRoom(serviceRoomCreated)
@@ -53,10 +53,10 @@ async function updateServiceRoom({id, name, image}){
     return 'Update Succes'
 }
 
-async function deleteServiceRoom(idRoom){
+async function deleteServiceRoom(id){
     await ServicesRoom.destroy({
         where:{
-            id: idRoom
+            id: id
         }
     })
     return 'Deleted'

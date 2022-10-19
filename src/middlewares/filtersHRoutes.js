@@ -9,13 +9,13 @@ router.get('/location', async (req, res, next) => {
     try {
       const hotels = await Hotel.findAll({ include: {
         model: Location,
-        attributes: ['city', 'country','continent'],
+        attributes: ['city', 'state','department'],
         through: {
             attributes: []
         }
     }
     })      
-        const filterLocation = hotels?.filter(e => e.Locations?.find(e => (e.city) === filter || (e.country) === filter || (e.continent) === filter))
+        const filterLocation = hotels?.filter(e => e.Locations?.find(e => (e.city) === filter || (e.department) === filter || (e.state) === filter))
         filterLocation? res.json(filterLocation) : res.send('no hotels were found with that location')       
         
     } catch (error) {

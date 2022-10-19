@@ -8,7 +8,7 @@ async function getHotelByName(name){
         let hotelFinded = await Hotel.findAll({ where: {name: {[Op.iLike]: `%${name}%`}},
         include: [{
             model: Location,
-            attributes: ['city', 'country','continent'],
+            attributes: ['city', 'state','department'],
             through: {
                 attributes: []
             }
@@ -45,7 +45,7 @@ async function getAllHotels(){
     try {  
     let hotelsAll = await Hotel.findAll({ include: [{
         model: Location,
-        attributes: ['city', 'country','continent'],
+        attributes: ['city', 'state','department'],
         through: {
             attributes: []
         }
@@ -80,7 +80,7 @@ async function getHotelById(id){
     try {
         let hotelFinded = await Hotel.findByPk(id,{ include: [{
             model: Location,
-            attributes: ['city', 'country','continent'],
+            attributes: ['city', 'state','department'],
             through: {
                 attributes: []
             }
@@ -113,16 +113,12 @@ async function getHotelById(id){
     }
 }
 
-async function createHotel({name, image, qualification, description, city, continent, country, servicesHotel, event}){
+async function createHotel({name, image, qualification, description, idLocation , servicesHotel, event}){
 
     let [hotelCreated, hotelC] = await Hotel.findOrCreate({where:{name:name},defaults:{
         name, image, qualification, description
     }})
-    
-    let [locationCreated, locationC] = await Location.findOrCreate({where:{city},defaults:{
-        city, continent, country
-    }})
-    
+
     if(servicesHotel){
         servicesHotel.map(async (e) => {
             let [servicesCreated, servicesH] = await ServicesHotel.findOrCreate({where:{name: e.name},defaults:{
@@ -134,23 +130,44 @@ async function createHotel({name, image, qualification, description, city, conti
         })
         
     }
+
+    if(idLocation){
+        let locationFinded= await Location.findByPk(idLocation)
+        hotelFinded.addLocation(locationFinded)
+        }
+
+
     // let eventFinded = await Event.findAll({where: {name: event}})
 
     
     // hotelCreated.addEvents(eventFinded)
-    hotelCreated.addLocation(locationCreated)
 
     return hotelCreated
 }
 
-async function updateHotel({id,name, image, qualification, description, city, continent, country, servicesHotel, event}){
+async function updateHotel({id,name, image, qualification, description, idLocation, servicesHotel, event}){
 
-    await Hotel.update({
-        name:name,
-        image: image, 
-        qualification:qualification, 
-        description:description
-    },{where:{id: id}})
+    let hotelFinded = await Hotel.findByPk(id,{include: [{
+        model: Location,
+        attributes: ['city', 'state','department'],
+        through: {
+            attributes: []
+        }
+    }]},{new: true})
+    Hotel_Location.destroy({where:{HotelId: id}})
+
+    if(hotelFinded){
+        hotelFinded.name = name
+        hotelFinded.image = image
+        hotelFinded.qualification = qualification
+        hotelFinded.description = description
+    }
+    if(idLocation){
+    let locationFinded= await Location.findByPk(idLocation)
+    hotelFinded.addLocation(locationFinded)
+    }
+    
+    await hotelFinded.save()
     return 'Update Succes'
 }
 
