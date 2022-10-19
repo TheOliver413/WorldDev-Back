@@ -59,10 +59,12 @@ async function createRoom({id,name, image, discount, description, price, availab
     let roomCreated = await Room.create({
         name, image, discount, description, price, available,category
     })
-    
+    if(servicesRoom){
     let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
 
     hotelFinded.addServicesRooms(servicesFinded)
+    }
+    
 
     hotelFinded.addRoom(roomCreated)  
 
@@ -73,12 +75,34 @@ async function createRoom({id,name, image, discount, description, price, availab
     
 }
 
-async function updateRoom({id,name, image, discount, description, price,available,category}){
-    await Room.update({
-        name, image, discount, description, price,available,category
-    },{
-        where:{id: id}
-    })
+
+async function updateRoom({id,name, image, discount, description, price,available,category, idServicesRoom}){
+    let roomFinded = await Room.findByPk(id,{include: [{
+                model: ServicesRoom,
+                attributes: ['name', 'image'],
+                through: {
+                    attributes: []
+                }
+            }]},{new: true})
+
+            Room_Services.destroy({where:{RoomId: id}})
+
+    if(hotelFinded){
+        roomFinded.name = name
+        roomFinded.image = image
+        roomFinded.price = price
+        roomFinded.description = description
+        roomFinded.discount = discount
+        roomFinded.available = available
+        roomFinded.category = category
+    }
+    if(idServicesRoom){
+    let servicesFinded= await ServicesRoom.findByPk(idServicesRoom)
+    roomFinded.addServicesRooms(servicesFinded)
+    }
+    
+    await roomFinded.save()
+   
     return 'Update Succes'
 }
 
