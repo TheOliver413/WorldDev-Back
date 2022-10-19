@@ -10,15 +10,15 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true
     },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    department: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     city: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    country: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    continent: {
       type: DataTypes.STRING,
       allowNull: false,
     },

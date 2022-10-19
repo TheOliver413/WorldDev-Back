@@ -22,7 +22,7 @@ async function getServiceById(id){
         if(servicesHFinded){
             return servicesHFinded 
         }
-            return 'No rooms found'
+            return 'No services found'
     } catch (error) {
         console.log(error)
     }

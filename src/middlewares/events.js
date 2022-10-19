@@ -1,12 +1,12 @@
 const {Router} = require('express')
-const {createEvent, getEventByName, getEventById, updateEvent, deleteEvent,getHotelEventsById} = require('../controllers/events')
+const {createEvent, getEvent, getEventById, updateEvent, deleteEvent,getHotelEventsById} = require('../controllers/events')
 
 const router = Router()
 
 router.get('', async (req, res, next)=>{
     const {name} = req.query
     try {
-          return res.json(await getEventByName(name)) 
+          return res.json(await getEvent()) 
     } catch (error) {
         next(error)
     }

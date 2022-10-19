@@ -52,19 +52,19 @@ async function getRoomById(id){
     }
 }
 //----------------------Crea una room-----------------------------
-async function createRoom({idHotel,name, image, discount, description, price, available, servicesRoom, category}){
+async function createRoom({id,name, image, discount, description, price, available, servicesRoom, category}){
     try {
-        let hotelFinded = await Hotel.findByPk(idHotel)
+        let hotelFinded = await Hotel.findByPk(id)
 
     let roomCreated = await Room.create({
         name, image, discount, description, price, available,category
     })
     
-    // let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
+    let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
 
-    hotelFinded.addRoom(roomCreated)
-    // hotelFinded.addServicesRooms(servicesFinded)
-    
+    hotelFinded.addServicesRooms(servicesFinded)
+
+    hotelFinded.addRoom(roomCreated)  
 
     return 'Room created'
     } catch (error) {

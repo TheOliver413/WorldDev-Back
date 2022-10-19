@@ -2,14 +2,14 @@ const { Hotel, Location, ServicesHotel, ServicesRoom, Room, Event } = require('.
 
 const { Op } = require('sequelize')
 
-async function getEventByName(){
+async function getEvent(){
     try {
         let eventFinded = await Event.findAll()
 
         if(eventFinded){
             return eventFinded 
         }
-            return 'No services hotel found'
+            return 'No events hotel found'
     } catch (error) {
         console.log(error)
     }
@@ -41,7 +41,7 @@ async function getHotelEventsById(id){
         if(hotelEventsFinded){
             return hotelEventsFinded.Events
         }
-            return 'No rooms found'
+            return 'No events found'
     } catch (error) {
         console.log(error)
     }
@@ -88,7 +88,7 @@ async function deleteEvent(idHotel){
 
 module.exports = {
     createEvent, 
-    getEventByName, 
+    getEvent, 
     getEventById, 
     updateEvent, 
     deleteEvent,
