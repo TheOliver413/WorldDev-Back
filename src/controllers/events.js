@@ -32,7 +32,7 @@ async function getHotelEventsById(id){
     try {
         let hotelEventsFinded = await Hotel.findByPk(id,{ include: [{
             model: Event,
-            attributes: ['id','name','image','description', 'date', 'price'],
+            attributes: ['id','name','image','description', 'date'],
             through: {
                 attributes: []
             }
@@ -46,7 +46,7 @@ async function getHotelEventsById(id){
         console.log(error)
     }
 }
-async function createEvent({ idHotel, name, description, image ,price, date}) {
+async function createEvent({ idHotel, name, description, image , date}) {
     try {
         let hotelFinded = await Hotel.findByPk(idHotel)
 
@@ -54,7 +54,6 @@ async function createEvent({ idHotel, name, description, image ,price, date}) {
             name: name, 
             description: description, 
             image: image, 
-            price: price,
             date: date
         }})
 

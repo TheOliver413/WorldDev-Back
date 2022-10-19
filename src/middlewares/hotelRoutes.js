@@ -15,7 +15,11 @@ router.get('', async (req, res, next)=>{
                 return res.json(result)
             }
         }else{
-            return res.json(await getAllHotels())
+            let hotels = await getAllHotels()
+            if(hotels.length > 0){
+                return res.json(hotels)
+            }
+            return res.status(404).send("Not hotels found")
         }
     } catch (error) {
         console.log(error)

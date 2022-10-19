@@ -24,8 +24,5 @@ module.exports = (sequelize) => {
         date:{
             type: DataTypes.DATE
         },
-        price:{
-            type: DataTypes.INTEGER
-        }
     });
 };
