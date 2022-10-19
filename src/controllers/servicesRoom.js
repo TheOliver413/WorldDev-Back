@@ -32,11 +32,12 @@ async function createServiceRoom({id, name, image}) {
     try {
         let roomFinded = await Room.findByPk(id)
 
-        let serviceRoomCreated = await ServicesRoom.findOrCreate({ where: {name: {[Op.iLike]: name}}},{
-            name:name, image:image
-        })
+        let [serviceRoomCreated, serviceRoom] = await ServicesRoom.findOrCreate({where:{name: name},defaults:{
+            name: name,
+            image: image
+        }})
 
-        roomFinded.addServicesRoom(serviceRoomCreated)
+        roomFinded.addServicesRooms(serviceRoomCreated)
 
         return 'Service Room created'
     } catch (error) {
