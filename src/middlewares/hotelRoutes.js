@@ -10,7 +10,7 @@ router.get('', async (req, res, next)=>{
         if(name){
             let result = await getHotelByName(name)
             if(typeof result !== 'object'){
-                return res.status(404).send(result)
+                return res.status(404).send('Hotel not found')
             }else{
                 return res.json(result)
             }
