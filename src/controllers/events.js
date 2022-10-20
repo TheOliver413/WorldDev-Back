@@ -66,9 +66,9 @@ async function createEvent({ idHotel, name, description, image , date, time}) {
     }
 }
 
-async function updateEvent({id, name, description, image,time}){
+async function updateEvent({id, name, description, image,date,time}){
     await Event.update({
-        name:name, description:description, image:image,time:time
+        name:name, description:description, image:image, date:date, time:time
     },{
         where:{id: id}
     })
