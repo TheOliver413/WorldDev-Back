@@ -32,7 +32,7 @@ async function getHotelEventsById(id){
     try {
         let hotelEventsFinded = await Hotel.findByPk(id,{ include: [{
             model: Event,
-            attributes: ['id','name','image','description', 'date'],
+            attributes: ['id','name','image','description', 'date','time'],
             through: {
                 attributes: []
             }
@@ -46,7 +46,7 @@ async function getHotelEventsById(id){
         console.log(error)
     }
 }
-async function createEvent({ idHotel, name, description, image , date}) {
+async function createEvent({ idHotel, name, description, image , date, time}) {
     try {
         let hotelFinded = await Hotel.findByPk(idHotel)
 
@@ -54,7 +54,8 @@ async function createEvent({ idHotel, name, description, image , date}) {
             name: name, 
             description: description, 
             image: image, 
-            date: date
+            date: date,
+            time: time
         }})
 
         hotelFinded.addEvents(eventCreated)
@@ -63,27 +64,25 @@ async function createEvent({ idHotel, name, description, image , date}) {
     } catch (error) {
         console.log(error)
     }
-
 }
 
-async function updateEvent({idHotel, name, description, image}){
+async function updateEvent({id, name, description, image,time}){
     await Event.update({
-        id:idHotel, name:name, description:description, image:image
+        name:name, description:description, image:image,time:time
     },{
-        where:{id: idHotel}
+        where:{id: id}
     })
     return 'Update Succes'
 }
 
-async function deleteEvent(idHotel){
+async function deleteEvent(id){
     await Event.destroy({
         where:{
-            id: idHotel
+            id: id
         }
     })
     return 'Deleted'
 }
-
 
 module.exports = {
     createEvent, 
