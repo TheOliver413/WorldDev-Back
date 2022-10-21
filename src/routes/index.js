@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 const { Router } = require('express');
 const router = Router();
 const roomRoutes = require('../middlewares/roomRoutes')
@@ -10,6 +10,8 @@ const servicesRooms = require('../middlewares/servicesRoom')
 const events = require('../middlewares/events')
 const locations = require('../middlewares/locations')
 
+const stripe = require('../middlewares/stripe')
+
 router.use('/filtersHotels', filtersHRoutes)
 router.use('/filtersRooms', filtersRRoutes)
 router.use('/rooms',roomRoutes)
@@ -18,5 +20,6 @@ router.use('/serviceHotels', servicesHotel)
 router.use('/serviceRooms', servicesRooms)
 router.use('/events', events)
 router.use('/locations', locations)
+router.use('/stripe', stripe)
 
 module.exports = router;
