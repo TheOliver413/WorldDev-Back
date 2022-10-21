@@ -17,8 +17,14 @@
 //     =====`-.____`.___ \_____/___.-`___.-'=====
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+require('dotenv').config();
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
+
+const cors = require("cors");
+
+server.use(cors({ origin: "http://localhost:3000" }))
+
 
 // Syncing all the models at once.
 conn.sync({ force: false }).then(() => {
