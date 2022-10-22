@@ -1,6 +1,6 @@
 const {Router} = require('express')
 const {Room} = require('../db')
-const { getRoomsByName,getRoomById ,createRoom, updateRoom, deleteRoom} = require('../controllers/room')
+const { getRoomsByName,getRoomById ,createRoom, updateRoom, deleteRoom,getAllRoomsOfHotel} = require('../controllers/room')
 
 const router = Router()
 
@@ -14,14 +14,14 @@ router.get('', async (req, res, next)=>{
         }
     })
 
-// router.get('', async (req, res, next)=>{
-//     const {id} = req.query
-//     try {
-//           return res.json(await getAllRoomsOfHotel(id)) 
-//     } catch (error) {
-//         next(error)
-//     }
-// })
+router.get('/allRooms/:id', async (req, res, next)=>{
+        const {id} = req.params
+        try {
+              return res.json(await getAllRoomsOfHotel(id)) 
+        } catch (error) {
+            next(error)
+        }
+})
 
 router.get('/:id', async (req, res, next)=>{
     const {id} = req.params
