@@ -21,17 +21,24 @@ async function getRoomsByName(){
 }
 
 //Busca el hotel por ID y trae las rooms de ese hotel
-// async function getAllRoomsOfHotel(id){
-//     try {  
-//     let hotelFinded = await Hotel.findByPk(id)
-//     let roomsAll = hotelFinded.getRooms()    
+async function getAllRoomsOfHotel(id){
+    try {  
+        let hotelFinded = await Hotel.findByPk(id,{ include:{
+            model: Room,
+            attributes: ['id','name','image','discount','price','description','available','category'],
+            through: {
+                attributes: []
+            }
+        }})
 
-//     let result =  roomsAll ? roomsAll : 'No rooms found'
-//         return result
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+    let roomsAll = hotelFinded.Rooms
+    
+    let result =  roomsAll ? roomsAll : 'No rooms found'
+        return result
+    } catch (error) {
+        console.log(error)
+    }
+}
 //Busca una room por ID
 async function getRoomById(id){
     try {
@@ -56,7 +63,12 @@ async function createRoom({id,name, image, discount, description, price, availab
     try {
         let hotelFinded = await Hotel.findByPk(id)
 
-        let imagesData = image.map(e => e.url)
+        let imagesData = []
+        if(typeof image[0] === "string"){
+            imagesData = image
+        }else{
+             imagesData = image.map(e => e.url)
+        }
 
     let roomCreated = await Room.create({
         name:name, image:imagesData, discount:discount, description:description, price:price, available:available,category:category
@@ -80,7 +92,12 @@ async function createRoom({id,name, image, discount, description, price, availab
 
 async function updateRoom({id,name, image, discount, description, price,available,category, idServicesRoom}){
 
-    let imagesData = image.map(e => e.url)
+    let imagesData = []
+    if(typeof image[0] === "string"){
+        imagesData = image
+    }else{
+         imagesData = image.map(e => e.url)
+    }
 
     let roomFinded = await Room.findByPk(id,{include: [{
                 model: ServicesRoom,
@@ -122,7 +139,7 @@ async function deleteRoom(id){
 
 module.exports = {
     getRoomsByName,
-    // getAllRoomsOfHotel,
+    getAllRoomsOfHotel,
     getRoomById,
     createRoom,
     deleteRoom,

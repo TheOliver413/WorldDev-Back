@@ -1,4 +1,4 @@
-const {Hotel , Location, ServicesHotel, ServicesRoom, Room,Event} = require('../db')
+const {Hotel , Location, ServicesHotel, ServicesRoom, Room,Event,Hotel_Location} = require('../db')
 
 const {Op} = require('sequelize')
 
@@ -115,7 +115,12 @@ async function getHotelById(id){
 
 async function createHotel({name, image, qualification, description, idLocation , servicesHotel, event}){
 
-    let imagesData = image.map(e => e.url)
+    let imagesData = []
+    if(typeof image[0] === "string"){
+        imagesData = image
+    }else{
+         imagesData = image.map(e => e.url)
+    }
 
     let [hotelCreated, hotelC] = await Hotel.findOrCreate({where:{name:name},defaults:{
         name:name, image: imagesData, qualification:qualification, description:description
@@ -149,7 +154,12 @@ async function createHotel({name, image, qualification, description, idLocation 
 
 async function updateHotel({id,name, image, qualification, description, idLocation, servicesHotel, event}){
     
-    let imagesData = image.map(e => e.url)
+    let imagesData = []
+    if(typeof image[0] === "string"){
+        imagesData = image
+    }else{
+         imagesData = image.map(e => e.url)
+    }
 
     let hotelFinded = await Hotel.findByPk(id,{include: [{
         model: Location,
