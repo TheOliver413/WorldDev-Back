@@ -115,8 +115,10 @@ async function getHotelById(id){
 
 async function createHotel({name, image, qualification, description, idLocation , servicesHotel, event}){
 
+    let imagesData = image.map(e => e.url)
+
     let [hotelCreated, hotelC] = await Hotel.findOrCreate({where:{name:name},defaults:{
-        name, image, qualification, description
+        name:name, image: imagesData, qualification:qualification, description:description
     }})
 
     if(servicesHotel){
@@ -133,7 +135,7 @@ async function createHotel({name, image, qualification, description, idLocation 
 
     if(idLocation){
         let locationFinded= await Location.findByPk(idLocation)
-        hotelFinded.addLocation(locationFinded)
+        hotelCreated.addLocation(locationFinded)
         }
 
 
@@ -146,6 +148,8 @@ async function createHotel({name, image, qualification, description, idLocation 
 }
 
 async function updateHotel({id,name, image, qualification, description, idLocation, servicesHotel, event}){
+    
+    let imagesData = image.map(e => e.url)
 
     let hotelFinded = await Hotel.findByPk(id,{include: [{
         model: Location,
@@ -158,7 +162,7 @@ async function updateHotel({id,name, image, qualification, description, idLocati
 
     if(hotelFinded){
         hotelFinded.name = name
-        hotelFinded.image = image
+        hotelFinded.image = imagesData
         hotelFinded.qualification = qualification
         hotelFinded.description = description
     }

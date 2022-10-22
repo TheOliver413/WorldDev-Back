@@ -56,8 +56,10 @@ async function createRoom({id,name, image, discount, description, price, availab
     try {
         let hotelFinded = await Hotel.findByPk(id)
 
+        let imagesData = image.map(e => e.url)
+
     let roomCreated = await Room.create({
-        name, image, discount, description, price, available,category
+        name:name, image:imagesData, discount:discount, description:description, price:price, available:available,category:category
     })
     if(servicesRoom){
     let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
@@ -77,6 +79,9 @@ async function createRoom({id,name, image, discount, description, price, availab
 
 
 async function updateRoom({id,name, image, discount, description, price,available,category, idServicesRoom}){
+
+    let imagesData = image.map(e => e.url)
+
     let roomFinded = await Room.findByPk(id,{include: [{
                 model: ServicesRoom,
                 attributes: ['name', 'image'],
@@ -89,7 +94,7 @@ async function updateRoom({id,name, image, discount, description, price,availabl
 
     if(hotelFinded){
         roomFinded.name = name
-        roomFinded.image = image
+        roomFinded.image = imagesData
         roomFinded.price = price
         roomFinded.description = description
         roomFinded.discount = discount
