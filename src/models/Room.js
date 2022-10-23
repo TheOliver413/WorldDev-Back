@@ -26,13 +26,16 @@ module.exports = (sequelize) => {
         },
         description: {
             type: DataTypes.TEXT
-        },
+        }, 
         available: {
             type: DataTypes.BOOLEAN,
             defaultValue: true
         },
         category: {
             type: DataTypes.STRING,
+        },
+        stock: {
+            type: DataTypes.INTEGER,
         }
     });
 };

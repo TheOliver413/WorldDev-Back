@@ -9,8 +9,8 @@ const servicesHotel = require('../middlewares/servicesHotel')
 const servicesRooms = require('../middlewares/servicesRoom')
 const events = require('../middlewares/events')
 const locations = require('../middlewares/locations')
-
 const stripe = require('../middlewares/stripe')
+const booking = require('../middlewares/bookingRoutes')
 
 router.use('/filtersHotels', filtersHRoutes)
 router.use('/filtersRooms', filtersRRoutes)
@@ -21,5 +21,6 @@ router.use('/serviceRooms', servicesRooms)
 router.use('/events', events)
 router.use('/locations', locations)
 router.use('/stripe', stripe)
+router.use('/booking', booking)
 
 module.exports = router;
