@@ -25,7 +25,7 @@ async function getAllRoomsOfHotel(id){
     try {  
         let hotelFinded = await Hotel.findByPk(id,{ include:{
             model: Room,
-            attributes: ['id','name','image','discount','price','description','available','category'],
+            attributes: ['id','name','image','discount','price','description','available','category','stock'],
             through: {
                 attributes: []
             }
@@ -59,7 +59,7 @@ async function getRoomById(id){
     }
 }
 //----------------------Crea una room-----------------------------
-async function createRoom({id,name, image, discount, description, price, available, servicesRoom, category}){
+async function createRoom({id,name, image, discount, description, price, available, servicesRoom, category, stock}){
     try {
         let hotelFinded = await Hotel.findByPk(id)
 
@@ -71,7 +71,7 @@ async function createRoom({id,name, image, discount, description, price, availab
         }
 
     let roomCreated = await Room.create({
-        name:name, image:imagesData, discount:discount, description:description, price:price, available:available,category:category
+        name:name, image:imagesData, discount:discount, description:description, price:price, available:available,category:category,stock:stock
     })
     if(servicesRoom){
     let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
@@ -90,7 +90,7 @@ async function createRoom({id,name, image, discount, description, price, availab
 }
 
 
-async function updateRoom({id,name, image, discount, description, price,available,category, idServicesRoom}){
+async function updateRoom({id,name, image, discount, description, price,available,category, idServicesRoom,stock}){
 
     let imagesData = []
     if(typeof image[0] === "string"){
@@ -109,7 +109,7 @@ async function updateRoom({id,name, image, discount, description, price,availabl
 
             Room_Services.destroy({where:{RoomId: id}})
 
-    if(hotelFinded){
+    if(roomFinded){
         roomFinded.name = name
         roomFinded.image = imagesData
         roomFinded.price = price
@@ -117,6 +117,7 @@ async function updateRoom({id,name, image, discount, description, price,availabl
         roomFinded.discount = discount
         roomFinded.available = available
         roomFinded.category = category
+        roomFinded.stock = stock
     }
     if(idServicesRoom){
     let servicesFinded= await ServicesRoom.findByPk(idServicesRoom)
