@@ -1,4 +1,4 @@
-const {Hotel , Location, ServicesHotel, ServicesRoom, Room} = require('../db')
+const {Hotel , Location, ServicesHotel, ServicesRoom, Room, Room_Services} = require('../db')
 const {Op} = require('sequelize')
 
 async function getRoomsByName(){
