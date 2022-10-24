@@ -30,9 +30,17 @@ async function getServiceRoomById(id){
 
 async function createServiceRoom({name, image}) {
     try {
+
+        let imagesData = []
+        if(typeof image[0] === "string"){
+            imagesData = image
+        }else{
+             imagesData = image.map(e => e.url)
+        }
+
         await ServicesRoom.findOrCreate({where:{name: name},defaults:{
             name: name,
-            image: image
+            image: imagesData[0]
         }})
         return 'Service Room created'
     } catch (error) {
@@ -41,8 +49,15 @@ async function createServiceRoom({name, image}) {
 }
 
 async function updateServiceRoom({id, name, image}){
+
+    let imagesData = []
+    if(typeof image[0] === "string"){
+        imagesData = image
+    }else{
+         imagesData = image.map(e => e.url)
+    }
     await ServicesRoom.update({
-       name:name, image:image
+       name:name, image:imagesData[0]
     },{
         where:{id: id}
     })
