@@ -49,10 +49,18 @@ async function getHotelServiceById(id){
 
 async function createServiceH({ idHotel, name, description, image }) {
     try {
+
+        let imagesData = []
+    if(typeof image[0] === "string"){
+        imagesData = image
+    }else{
+         imagesData = image.map(e => e.url)
+    }
+
         let hotelFinded = await Hotel.findByPk(idHotel)
         
         let serviceHCreated = await ServicesHotel.create({
-            name:name, description:description, image:image
+            name:name, description:description, image:imagesData[0]
         })
         
         hotelFinded.addServicesHotels(serviceHCreated)
@@ -65,7 +73,14 @@ async function createServiceH({ idHotel, name, description, image }) {
 
 async function updateServiceH({id, name, description, image}){
     
-    await ServicesHotel.update({name:name, description:description, image:image},{
+    let imagesData = []
+    if(typeof image[0] === "string"){
+        imagesData = image
+    }else{
+         imagesData = image.map(e => e.url)
+    }
+
+    await ServicesHotel.update({name:name, description:description, image:imagesData[0]},{
             where:{
                 id: id
             }

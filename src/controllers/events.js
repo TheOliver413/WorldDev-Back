@@ -1,4 +1,4 @@
-const { Hotel, Location, ServicesHotel, ServicesRoom, Room, Event } = require('../db')
+const { Hotel, Location, ServicesHotel, ServicesRoom, Room, Event,Hotel_Event } = require('../db')
 
 const { Op } = require('sequelize')
 
@@ -49,11 +49,16 @@ async function getHotelEventsById(id){
 async function createEvent({ idHotel, name, description, image , date, time}) {
     try {
         let hotelFinded = await Hotel.findByPk(idHotel)
-
+        let imagesData = []
+        if(typeof image[0] === "string"){
+            imagesData = image
+        }else{
+             imagesData = image?.map(e => e.url)
+        }
         let [eventCreated, servicesHo] = await Event.findOrCreate({where:{name},defaults:{
             name: name, 
             description: description, 
-            image: image, 
+            image: imagesData[0], 
             date: date,
             time: time
         }})
@@ -66,12 +71,29 @@ async function createEvent({ idHotel, name, description, image , date, time}) {
     }
 }
 
-async function updateEvent({id, name, description, image,date,time}){
-    await Event.update({
-        name:name, description:description, image:image, date:date, time:time
-    },{
-        where:{id: id}
+async function updateEvent({id,idHotel, name, description, image,date,time}){
+
+    let imagesData = []
+    if(typeof image[0] === "string"){
+        imagesData = image
+    }else{
+         imagesData = image?.map(e => e.url)
+    }
+
+     let hotelFinded = await Hotel.findByPk(idHotel)
+     
+    Hotel_Event.destroy({where:{HotelId:idHotel}})
+
+    let eventCreated= await Event.create({
+        name: name, 
+        description: description, 
+        image: imagesData[0], 
+        date: date,
+        time: time
     })
+
+    hotelFinded.addEvents(eventCreated)
+
     return 'Update Succes'
 }
 
