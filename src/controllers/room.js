@@ -59,7 +59,7 @@ async function getRoomById(id){
     }
 }
 //----------------------Crea una room-----------------------------
-async function createRoom({id,name, image, discount, description, price, available, servicesRoom, category, stock}){
+async function createRoom({id,name, image, discount, description, price, available, services, category, stock}){
     try {
         let hotelFinded = await Hotel.findByPk(id)
 
@@ -74,10 +74,10 @@ async function createRoom({id,name, image, discount, description, price, availab
         name:name, image:imagesData, discount:discount, description:description, price:price, available:available,category:category,stock:stock
     })
 
-     if(servicesRoom.length > 0){
-        for (let i = 0; i < servicesRoom.length; i++) {
+     if(services.length > 0){
+        for (let i = 0; i < services.length; i++) {
     
-            let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom[i]}})
+            let servicesFinded = await ServicesRoom.findAll({where: {name: services[i]}})
             roomCreated.addServicesRooms(servicesFinded)
         }
     }
@@ -93,7 +93,7 @@ async function createRoom({id,name, image, discount, description, price, availab
 }
 
 
-async function updateRoom({id,name, image, discount, description, price,available,category, idServicesRoom,stock}){
+async function updateRoom({id,name, image, discount, description, price,available,category, services,stock}){
 
     let imagesData = []
     if(typeof image[0] === "string"){
@@ -122,11 +122,19 @@ async function updateRoom({id,name, image, discount, description, price,availabl
         roomFinded.category = category
         roomFinded.stock = stock
     }
-    if(idServicesRoom){
-    let servicesFinded= await ServicesRoom.findByPk(idServicesRoom)
-    roomFinded.addServicesRooms(servicesFinded)
-    }
+
+    if(services.length > 0){
+        for (let i = 0; i < services.length; i++) {
     
+            let servicesFinded = await ServicesRoom.findAll({where: {name: services[i]}})
+            roomFinded.addServicesRooms(servicesFinded)
+        }
+    }
+    // if(idServicesRoom){
+    // let servicesFinded= await ServicesRoom.findByPk(idServicesRoom)
+    // roomFinded.addServicesRooms(servicesFinded)
+    // }
+
     await roomFinded.save()
    
     return 'Update Succes'
