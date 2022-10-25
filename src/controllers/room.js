@@ -73,10 +73,13 @@ async function createRoom({id,name, image, discount, description, price, availab
     let roomCreated = await Room.create({
         name:name, image:imagesData, discount:discount, description:description, price:price, available:available,category:category,stock:stock
     })
-    if(servicesRoom){
-    let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom}})
 
-    hotelFinded.addServicesRooms(servicesFinded)
+     if(servicesRoom.length > 0){
+        for (let i = 0; i < servicesRoom.length; i++) {
+    
+            let servicesFinded = await ServicesRoom.findAll({where: {name: servicesRoom[i]}})
+            roomCreated.addServicesRooms(servicesFinded)
+        }
     }
     
 
