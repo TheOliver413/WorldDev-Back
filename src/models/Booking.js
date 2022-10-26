@@ -11,19 +11,25 @@ module.exports = (sequelize) => {
             primaryKey: true
         },
         cartTotalQuantity: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         cartTotalAmount:{
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         checkIn:{
-            type: DataTypes.DATE
+            type: DataTypes.DATE,
+            allowNull: false
         },
         checkOut:{
-            type: DataTypes.DATE
+            type: DataTypes.DATE,
+            allowNull: false
         },
         stock: {
-            type: DataTypes.INTEGER 
+            type: DataTypes.ARRAY(DataTypes.JSON),
+            allowNull: false,
+            defaultValue: []
         }
     });
 };
