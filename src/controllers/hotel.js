@@ -123,13 +123,16 @@ async function createHotel({name, image, qualification, description, idLocation 
     }
 
     let [hotelCreated, hotelC] = await Hotel.findOrCreate({where:{name:name},defaults:{
-        name:name, image: imagesData, qualification:qualification, description:description
+        name:name.trimStart().trimEnd(), 
+        image: imagesData, 
+        qualification:qualification, 
+        description:description
     }})
 
     if(servicesHotel){
         servicesHotel.map(async (e) => {
             let [servicesCreated, servicesH] = await ServicesHotel.findOrCreate({where:{name: e.name},defaults:{
-            name: e.name,
+            name: e.name.trimStart().trimEnd(),
             description: e.description,
             image: e.image
         }})
@@ -171,7 +174,7 @@ async function updateHotel({id,name, image, qualification, description, idLocati
     Hotel_Location.destroy({where:{HotelId: id}})
 
     if(hotelFinded){
-        hotelFinded.name = name
+        hotelFinded.name = name.trimStart().trimEnd()
         hotelFinded.image = imagesData
         hotelFinded.qualification = qualification
         hotelFinded.description = description

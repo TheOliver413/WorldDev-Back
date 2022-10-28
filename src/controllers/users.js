@@ -10,16 +10,15 @@ async function getFirebaseInfo(){
 
      return  contacts
 }
-// async function createUser({email, name, rol}){
-//     await db.collection('users').add({
-//         email,
-//         name, 
-//         rol,
-//         favorites: []
-//     })
+async function createUser(body){
+    const id = body.id
+    delete body.id
 
-//     return 'User created!'
-// }
+    await db.collection('users').doc(id).set(body, { merge: true }) 
+
+    return 'User created!'
+}
+
 async function getUserById(id){
     let userFinded = await db.collection('users').doc(id).get()
     userFinded = {
@@ -43,7 +42,7 @@ async function deleteUser(id){
 }
 module.exports = {
     getFirebaseInfo,
-    // createUser,
+    createUser,
     getUserById,
     updateUser,
     deleteUser

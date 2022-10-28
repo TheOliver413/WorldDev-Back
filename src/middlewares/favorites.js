@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const {getFavoritesByUserId,addFavorites, deleteFavorites} = require('../controllers/favorites')
+const {getFavoritesByUserId,addFavorites, deleteFavorites, getFavoritesIdsByUserId} = require('../controllers/favorites')
 
 const router = Router()
 
@@ -15,6 +15,14 @@ router.post('', async (req, res, next)=>{
     
     try {
         return res.json( await addFavorites(req.body))
+    } catch (error) {
+        next(error)
+    }
+})
+router.get('/list/:id', async (req, res, next)=>{
+    const {id} = req.params
+    try {
+        return res.json(await getFavoritesIdsByUserId(id))
     } catch (error) {
         next(error)
     }

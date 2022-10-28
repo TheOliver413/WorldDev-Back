@@ -1,25 +1,15 @@
 const{db} = require('../firebase')
 const { Hotel, Location, ServicesHotel, ServicesRoom, Room, Event,Hotel_Event } = require('../db')
-// async function getFirebaseInfo(){
-//     const querySnapshot = await db.collection('users').get()
 
-//     const contacts = querySnapshot.docs.map(doc => ({
-//         id: doc.id,
-//         ...doc.data()
-//     }))
+async function getFavoritesIdsByUserId(id){
+    let userFinded = await db.collection('users').doc(id).get()
+    userFavorites = ({
+        favorites:userFinded.data().favorites
+    }).favorites
 
-//      return  contacts
-// }
-// async function createUser({email, name, rol}){
-//     await db.collection('users').add({
-//         email,
-//         name, 
-//         rol,
-//         favorites: []
-//     })
+    return userFavorites
+}
 
-//     return 'User created!'
-// }
 async function getFavoritesByUserId(id){
     let favoritesRooms = []
     let userFinded = await db.collection('users').doc(id).get()
@@ -39,10 +29,14 @@ async function addFavorites({id, favorites}){
     let userDat = await db.collection('users').doc(id).get()
     const info = userDat.data()
 
-    await db.collection('users').doc(id).update({
+    if(!info.favorites.includes(favorites[0])){
+      await db.collection('users').doc(id).update({
        ...info,
         favorites: [...info.favorites, ...favorites]
-    })
+    })  
+    }else{
+        throw new Error('Favorite includes in user favorites', { statusCode: 404 })
+    }
     return 'Favorites added'
 }
 
@@ -62,6 +56,7 @@ async function deleteFavorites({id, favorite}){
 module.exports = {
     getFavoritesByUserId,
     addFavorites,
+    getFavoritesIdsByUserId,
     deleteFavorites
 }
 

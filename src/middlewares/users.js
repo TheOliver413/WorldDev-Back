@@ -1,6 +1,6 @@
 const {Router} = require('express')
 const{db} = require('../firebase')
-const {getFirebaseInfo,getUserById,updateUser,deleteUser} = require('../controllers/users')
+const {getFirebaseInfo,getUserById,updateUser,deleteUser,createUser} = require('../controllers/users')
 
 const router = Router()
 
@@ -12,14 +12,13 @@ router.get('', async (req, res, next)=>{
     }
 })
 
-// router.post('', async (req, res, next)=>{
-    
-//     try {
-//         return res.json( await createUser(req.body))
-//     } catch (error) {
-//         next(error)
-//     }
-// })
+router.post('', async (req, res, next)=>{
+    try {
+        return res.json( await createUser(req.body))
+    } catch (error) {
+        next(error)
+    }
+})
 
 router.get('/:id', async (req, res, next)=>{
     const {id} = req.params
