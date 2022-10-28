@@ -33,7 +33,7 @@ router.get('/:id', async (req, res, next)=>{
     try {
         return res.json(await getFavoritesByUserId(id))
     } catch (error) {
-        next(error)
+        return res.status(404).send(error)
     }
 })
 
