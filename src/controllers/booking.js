@@ -1,8 +1,8 @@
 const { Booking, Room } = require('../db')
 
-const postBooking = async ({ idRoom, cartTotalQuantity, cartTotalAmount, checkIn, checkOut, stock }) => {
+const postBooking = async ({ idRoom, cartTotalQuantity, cartTotalAmount, cartRoom}) => {
     try {
-        const bookCreate = await Booking.create({ cartTotalQuantity, cartTotalAmount, checkIn, checkOut, stock })
+        const bookCreate = await Booking.create({ cartTotalQuantity, cartTotalAmount, cartRoom})
 
         if (idRoom.length > 1) {
             for (let i = 0; i < idRoom.length; i++) {

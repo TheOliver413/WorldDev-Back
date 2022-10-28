@@ -18,15 +18,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        checkIn:{
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        checkOut:{
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        stock: {
+        cartRoom: {
             type: DataTypes.ARRAY(DataTypes.JSON),
             allowNull: false,
             defaultValue: []

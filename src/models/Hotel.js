@@ -30,6 +30,9 @@ module.exports = (sequelize) => {
         },
         description:{
             type: DataTypes.TEXT
+        },
+        address:{
+            type: DataTypes.TEXT
         }
     });
 };

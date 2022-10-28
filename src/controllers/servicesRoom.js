@@ -39,7 +39,7 @@ async function createServiceRoom({name, image}) {
         }
 
         await ServicesRoom.findOrCreate({where:{name: name},defaults:{
-            name: name,
+            name: name.trimStart().trimEnd(),
             image: imagesData[0]
         }})
         return 'Service Room created'
@@ -57,7 +57,7 @@ async function updateServiceRoom({id, name, image}){
          imagesData = image.map(e => e.url)
     }
     await ServicesRoom.update({
-       name:name, image:imagesData[0]
+       name:name.trimStart().trimEnd(), image:imagesData[0]
     },{
         where:{id: id}
     })

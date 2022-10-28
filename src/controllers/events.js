@@ -56,7 +56,7 @@ async function createEvent({ idHotel, name, description, image , date, time}) {
              imagesData = image?.map(e => e.url)
         }
         let [eventCreated, servicesHo] = await Event.findOrCreate({where:{name},defaults:{
-            name: name, 
+            name: name.trimStart().trimEnd(), 
             description: description, 
             image: imagesData[0], 
             date: date,
@@ -85,7 +85,7 @@ async function updateEvent({id,idHotel, name, description, image,date,time}){
     Hotel_Event.destroy({where:{HotelId:idHotel}})
 
     let eventCreated= await Event.create({
-        name: name, 
+        name: name.trimStart().trimEnd(), 
         description: description, 
         image: imagesData[0], 
         date: date,

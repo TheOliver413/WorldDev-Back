@@ -71,7 +71,14 @@ async function createRoom({id,name, image, discount, description, price, availab
         }
 
     let roomCreated = await Room.create({
-        name:name, image:imagesData, discount:discount, description:description, price:price, available:available,category:category,stock:stock
+        name:name.trimStart().trimEnd(), 
+        image:imagesData, 
+        discount:discount, 
+        description:description, 
+        price:price, 
+        available:available,
+        category:category,
+        stock:stock
     })
 
      if(services.length > 0){
@@ -113,7 +120,7 @@ async function updateRoom({id,name, image, discount, description, price,availabl
             Room_Services.destroy({where:{RoomId: id}})
 
     if(roomFinded){
-        roomFinded.name = name
+        roomFinded.name = name.trimStart().trimEnd()
         roomFinded.image = imagesData
         roomFinded.price = price
         roomFinded.description = description
