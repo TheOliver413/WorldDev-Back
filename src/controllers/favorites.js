@@ -21,8 +21,8 @@ async function getFavoritesByUserId(id){
         let roomFinded = await Room.findByPk(userFavorites[i])
         favoritesRooms = [...favoritesRooms, roomFinded]
     }
-     
-    return favoritesRooms
+    if (favoritesRooms.length) return favoritesRooms
+    else throw 'No rooms added to favorites'
 }
 
 async function addFavorites({id, favorites}){
