@@ -1,20 +1,15 @@
 const { Booking, Room } = require('../db')
 
-const postBooking = async ({ idRoom, cartTotalQuantity, cartTotalAmount, cartRoom}) => {
+const postBooking = async ({ cartTotalQuantity, cartTotalAmount, cartRoom}) => {
     try {
         const bookCreate = await Booking.create({ cartTotalQuantity, cartTotalAmount, cartRoom})
 
-        if (idRoom.length > 1) {
-            for (let i = 0; i < idRoom.length; i++) {
-                const roomFind = await Room.findByPk(idRoom[i])
-                bookCreate.addRoom(roomFind)
+            for (let i = 0; i < cartRoom.length; i++) {
+                let roomFind = await Room.findByPk(cartRoom[i].id)
+                bookCreate.addRooms(roomFind)
             }
             return bookCreate;
-        }
-
-        const roomFind = await Room.findByPk(idRoom[0])
-        bookCreate.addRoom(roomFind)
-        return bookCreate;
+        
 
     } catch (error) {
         console.log(error)
@@ -33,7 +28,8 @@ const getAllBooking = async () => {
             }
         })
         if (allBooking.length) return allBooking
-        else return 'Booking not found'
+        else return []
+       
 
     } catch (error) {
         console.log(error)
