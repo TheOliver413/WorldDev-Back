@@ -4,7 +4,19 @@ const { Op } = require('sequelize')
 
 async function getEvent(){
     try {
-        let eventFinded = await Event.findAll()
+        let eventFinded = await Event.findAll({include: {
+            model: Hotel,
+            attributes: ["id","name", "address"],
+            through: {
+                attributes: []
+            },
+            include: {
+                model: Location,
+                attributes: ["id","state", "department", "city"],
+                through: {
+                    attributes: []
+                }}
+        }})
 
         if(eventFinded){
             return eventFinded 
@@ -36,6 +48,12 @@ async function getHotelEventsById(id){
             through: {
                 attributes: []
             }
+        },{
+            model: Location,
+            attributes: ['city', 'state','department'],
+            through: {
+                attributes: []
+            }
         }]})
 
         if(hotelEventsFinded){
@@ -55,13 +73,13 @@ async function createEvent({ idHotel, name, description, image , date, time}) {
         }else{
              imagesData = image?.map(e => e.url)
         }
-        let [eventCreated, servicesHo] = await Event.findOrCreate({where:{name},defaults:{
+        let eventCreated = await Event.create({
             name: name.trimStart().trimEnd(), 
             description: description, 
             image: imagesData[0], 
             date: date,
             time: time
-        }})
+        })
 
         hotelFinded.addEvents(eventCreated)
 
@@ -80,19 +98,17 @@ async function updateEvent({id,idHotel, name, description, image,date,time}){
          imagesData = image?.map(e => e.url)
     }
 
-     let hotelFinded = await Hotel.findByPk(idHotel)
-     
-    Hotel_Event.destroy({where:{HotelId:idHotel}})
-
-    let eventCreated= await Event.create({
-        name: name.trimStart().trimEnd(), 
-        description: description, 
-        image: imagesData[0], 
-        date: date,
+    await Event.update({
+        name:name.trimStart().trimEnd(), 
+        description:description, 
+        image:imagesData[0],
+        date:date,
         time: time
+    },{
+            where:{
+                id: id
+            }
     })
-
-    hotelFinded.addEvents(eventCreated)
 
     return 'Update Succes'
 }

@@ -113,7 +113,7 @@ async function getHotelById(id){
     }
 }
 
-async function createHotel({name, image, qualification, description, idLocation , servicesHotel, event}){
+async function createHotel({name, image, qualification, description, idLocation , servicesHotel, event, address}){
 
     let imagesData = []
     if(typeof image[0] === "string"){
@@ -126,7 +126,8 @@ async function createHotel({name, image, qualification, description, idLocation 
         name:name.trimStart().trimEnd(), 
         image: imagesData, 
         qualification:qualification, 
-        description:description
+        description:description,
+        address:address
     }})
 
     if(servicesHotel){
@@ -155,7 +156,7 @@ async function createHotel({name, image, qualification, description, idLocation 
     return hotelCreated
 }
 
-async function updateHotel({id,name, image, qualification, description, idLocation, servicesHotel, event}){
+async function updateHotel({id,name, image, qualification, description, idLocation, servicesHotel, event, address}){
     
     let imagesData = []
     if(typeof image[0] === "string"){
@@ -178,6 +179,7 @@ async function updateHotel({id,name, image, qualification, description, idLocati
         hotelFinded.image = imagesData
         hotelFinded.qualification = qualification
         hotelFinded.description = description
+        hotelFinded.address = address
     }
     if(idLocation){
     let locationFinded= await Location.findByPk(idLocation)

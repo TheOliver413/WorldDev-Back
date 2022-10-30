@@ -32,7 +32,7 @@ async function getAllRoomsOfHotel(id){
         }})
 
     let roomsAll = hotelFinded.Rooms
-    
+
     let result =  roomsAll ? roomsAll : 'No rooms found'
         return result
     } catch (error) {
@@ -42,13 +42,18 @@ async function getAllRoomsOfHotel(id){
 //Busca una room por ID
 async function getRoomById(id){
     try {
-        let roomFinded = await Room.findByPk(id,{include: {
+        let roomFinded = await Room.findByPk(id,{include: [{
             model: ServicesRoom,
             attributes: ['id', 'name','image'],
             through: {
                 attributes: []
             }
-        }})
+        },{model: Hotel,
+        attributes: ["id","name", "image", "qualification", "description", "address"],
+        through: {
+            attributes: []
+        }
+    }]})
 
         if(roomFinded){
             return roomFinded 
@@ -88,7 +93,6 @@ async function createRoom({id,name, image, discount, description, price, availab
             roomCreated.addServicesRooms(servicesFinded)
         }
     }
-    
 
     hotelFinded.addRoom(roomCreated)  
 
@@ -96,9 +100,8 @@ async function createRoom({id,name, image, discount, description, price, availab
     } catch (error) {
         console.log(error)
     }
-    
-}
 
+}
 
 async function updateRoom({id,name, image, discount, description, price,available,category, services,stock}){
 
@@ -137,13 +140,9 @@ async function updateRoom({id,name, image, discount, description, price,availabl
             roomFinded.addServicesRooms(servicesFinded)
         }
     }
-    // if(idServicesRoom){
-    // let servicesFinded= await ServicesRoom.findByPk(idServicesRoom)
-    // roomFinded.addServicesRooms(servicesFinded)
-    // }
 
     await roomFinded.save()
-   
+
     return 'Update Succes'
 }
 
