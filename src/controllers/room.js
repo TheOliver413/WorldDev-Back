@@ -3,13 +3,18 @@ const {Op} = require('sequelize')
 
 async function getRoomsByName(){
     try {
-        let roomFinded = await Room.findAll({include: {
+        let roomFinded = await Room.findAll({include: [{
             model: ServicesRoom,
             attributes: ['id', 'name','image'],
             through: {
                 attributes: []
             }
-        }})
+        },{model: Hotel,
+        attributes: ["id","name", "image", "qualification", "description", "address"],
+        through: {
+            attributes: []
+        }
+    }]})
 
         if(roomFinded){
             return roomFinded 
