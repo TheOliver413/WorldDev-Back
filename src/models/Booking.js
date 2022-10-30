@@ -22,6 +22,13 @@ module.exports = (sequelize) => {
             type: DataTypes.ARRAY(DataTypes.JSON),
             allowNull: false,
             defaultValue: []
+        },
+        user:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        status:{
+            type: DataTypes.STRING,
         }
     });
 };

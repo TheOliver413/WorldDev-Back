@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const { postBooking, getAllBooking, getBookingById } = require('../controllers/booking')
+const { postBooking, getAllBooking, getBookingById,modifyBooking, getBookingsByUserId} = require('../controllers/booking')
 const router = Router()
 
 router.post('/', async (req, res, next) => {
@@ -11,7 +11,6 @@ router.post('/', async (req, res, next) => {
     } catch (error) {
       next(error)  
     }
-
 })
 
 router.get('/', async (req, res, next) => {
@@ -36,6 +35,26 @@ router.get('/:id', async (req, res, next) => {
       next(error)  
     }
 
+})
+router.get('/user/:id', async (req, res, next) => {
+    
+  const { id } = req.params
+  
+  try {
+      res.json(await getBookingsByUserId(id))
+              
+  } catch (error) {
+    next(error)  
+  }
+})
+
+router.put('/', async (req, res, next) => {
+  try {
+    await modifyBooking(req.body)
+      res.json('booking modify')
+  } catch (error) {
+    next(error)  
+  }
 })
 
 
