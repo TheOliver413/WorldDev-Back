@@ -1,4 +1,4 @@
-const {Hotel , Location, ServicesHotel, ServicesRoom, Room,Event,Hotel_Location} = require('../db')
+const {Hotel , Location, ServicesHotel, ServicesRoom, Room,Event,Hotel_Location , Review} = require('../db')
 
 const {Op} = require('sequelize')
 
@@ -99,6 +99,12 @@ async function getHotelById(id){
         },{
             model: Event,
             attributes: ['id','name','image','description', 'date','time'],
+            through: {
+                attributes: []
+            }
+        },{
+            model: Review,
+            attributes: ['id', "name", "rating", "comment", "user"],
             through: {
                 attributes: []
             }

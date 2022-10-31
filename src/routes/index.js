@@ -13,6 +13,7 @@ const stripe = require('../middlewares/stripe')
 const booking = require('../middlewares/bookingRoutes')
 const users = require('../middlewares/users')
 const favorites = require('../middlewares/favorites')
+const reviews = require('../middlewares/reviews')
 
 router.use('/filtersHotels', filtersHRoutes)
 router.use('/filtersRooms', filtersRRoutes)
@@ -26,5 +27,6 @@ router.use('/stripe', stripe)
 router.use('/booking', booking)
 router.use('/users',users)
 router.use('/favorites', favorites)
+router.use('/reviews', reviews)
 
 module.exports = router;
