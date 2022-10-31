@@ -14,6 +14,7 @@ const booking = require('../middlewares/bookingRoutes')
 const users = require('../middlewares/users')
 const favorites = require('../middlewares/favorites')
 const reviews = require('../middlewares/reviews')
+const books = require('../middlewares/book')
 
 router.use('/filtersHotels', filtersHRoutes)
 router.use('/filtersRooms', filtersRRoutes)
@@ -28,5 +29,6 @@ router.use('/booking', booking)
 router.use('/users',users)
 router.use('/favorites', favorites)
 router.use('/reviews', reviews)
+router.use('/books', books)
 
 module.exports = router;

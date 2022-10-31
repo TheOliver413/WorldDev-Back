@@ -48,6 +48,31 @@ async function updateUser(body){
 
     return 'User modify!'
 }
+async function userBlock(body){
+    const id = body.id
+    delete body.id
+    let userDat = await db.collection('users').doc(id).get()
+    const info = userDat.data()
+
+    if(info.hasOwnProperty('blocked')){
+        if(info.blocked === true){
+            await db.collection('users').doc(id).update({
+                ...info,
+                 blocked: false
+             })
+        }else{
+            await db.collection('users').doc(id).update({
+                ...info,
+                 blocked: true
+             })
+        }
+    }else{
+         await db.collection('users').doc(id).update({ blocked: body.blocked})
+    }
+   
+    return 'User blocked!'
+}
+
 async function deleteUser(id){
     await db.collection('users').doc(id).delete()
     return 'User deleted!'
@@ -58,5 +83,6 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    getAdmins
+    getAdmins,
+    userBlock
 }

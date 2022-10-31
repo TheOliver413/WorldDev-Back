@@ -81,10 +81,43 @@ const modifyBooking = async (body) => {
     }
 }
 
+const modifyStatus = async ({user, id, status}) => {
+    try {
+      
+        let bookFind = await Booking.findAll({where:{user:user},raw: true, nest:true })
+       
+        let aux = bookFind
+        for (let i = 0; i < bookFind.length; i++) {
+            for (let j = 0; j < bookFind[i].cartRoom.length; j++) {
+                if(bookFind[i].cartRoom[j].id === id){
+                    aux[i].cartRoom[j].status = status
+                }
+            }
+            
+        }
+
+        for (let l = 0; l < bookFind.length; l++) {
+           await Booking.update({
+            ...aux[l]
+        },{
+            where:{
+                id: bookFind[l].id
+            }
+        }) 
+        }
+        
+      return 'Status modify!'
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
     postBooking,
     getAllBooking,
     getBookingById,
     modifyBooking,
-    getBookingsByUserId
+    getBookingsByUserId,
+    modifyStatus
 }
