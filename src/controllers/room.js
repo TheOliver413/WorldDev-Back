@@ -1,4 +1,4 @@
-const {Hotel , Location, ServicesHotel, ServicesRoom, Room, Room_Services} = require('../db')
+const {Hotel , Location, ServicesHotel, ServicesRoom, Room, Room_Services, Booking} = require('../db')
 const {Op} = require('sequelize')
 
 async function getRoomsByName(){
@@ -57,7 +57,12 @@ async function getRoomById(id){
         attributes: ["id","name", "image", "qualification", "description", "address"],
         through: {
             attributes: []
-        }
+        }},{model: Booking,
+            attributes: ["id","cartTotalQuantity", "cartTotalAmount", "cartRoom", "user", "status"],
+            through: {
+                attributes: []
+            }
+        
     }]})
 
         if(roomFinded){
