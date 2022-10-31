@@ -1,6 +1,6 @@
 const {Router} = require('express')
 const{db} = require('../firebase')
-const {getUsers,getUserById,updateUser,deleteUser,createUser , getAdmins} = require('../controllers/users')
+const {getUsers,getUserById,updateUser,deleteUser,createUser , getAdmins,userBlock} = require('../controllers/users')
 
 const router = Router()
 
@@ -40,6 +40,14 @@ router.get('/:id', async (req, res, next)=>{
 router.put('/', async(req,res,next)=>{
     try {
         res.json( await updateUser(req.body))
+    } catch (error) {
+        next(error)
+    } 
+})
+
+router.put('/blocked', async(req,res,next)=>{
+    try {
+        res.json( await userBlock(req.body))
     } catch (error) {
         next(error)
     } 
