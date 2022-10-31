@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const { postBooking, getAllBooking, getBookingById,modifyBooking, getBookingsByUserId} = require('../controllers/booking')
+const { postBooking, getAllBooking, getBookingById,modifyBooking, getBookingsByUserId, modifyStatus} = require('../controllers/booking')
 const router = Router()
 
 router.post('/', async (req, res, next) => {
@@ -57,5 +57,13 @@ router.put('/', async (req, res, next) => {
   }
 })
 
+router.put('/status', async (req, res, next) => {
+  try {
+    await modifyStatus(req.body)
+      res.json('booking modify')
+  } catch (error) {
+    next(error)  
+  }
+})
 
 module.exports = router
