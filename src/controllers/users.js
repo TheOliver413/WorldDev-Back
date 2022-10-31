@@ -1,15 +1,27 @@
 const{db} = require('../firebase')
 
-async function getFirebaseInfo(){
+async function getUsers(){
     const querySnapshot = await db.collection('users').get()
 
-    const contacts = querySnapshot.docs.map(doc => ({
+    let contacts = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
     }))
-
+    contacts = contacts.filter(e => e.rol === 'user')
      return  contacts
 }
+
+async function getAdmins(){
+    const querySnapshot = await db.collection('users').get()
+
+    let contacts = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }))
+    contacts = contacts.filter(e => e.rol === 'admin')
+     return  contacts
+}
+
 async function createUser(body){
     const id = body.id
     delete body.id
@@ -41,9 +53,10 @@ async function deleteUser(id){
     return 'User deleted!'
 }
 module.exports = {
-    getFirebaseInfo,
+    getUsers,
     createUser,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAdmins
 }

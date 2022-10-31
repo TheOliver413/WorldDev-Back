@@ -1,12 +1,20 @@
 const {Router} = require('express')
 const{db} = require('../firebase')
-const {getFirebaseInfo,getUserById,updateUser,deleteUser,createUser} = require('../controllers/users')
+const {getUsers,getUserById,updateUser,deleteUser,createUser , getAdmins} = require('../controllers/users')
 
 const router = Router()
 
 router.get('', async (req, res, next)=>{
     try {
-          return res.json(await getFirebaseInfo()) 
+          return res.json(await getUsers()) 
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get('/admins', async (req, res, next)=>{
+    try {
+          return res.json(await getAdmins()) 
     } catch (error) {
         next(error)
     }
