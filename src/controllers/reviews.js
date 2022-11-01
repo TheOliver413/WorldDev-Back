@@ -35,11 +35,20 @@ async function getHotelReviewsById(id) {
 }
 
 async function createReview({ idHotel, name, rating, comment, user }) {
-  const hotelFinded = await Hotel.findByPk(idHotel);
-  const reviews = await Review.findAll();
-  const allReviewsUserId = reviews.map((r) => r.dataValues.user);
+  const hotelFinded = await Hotel.findByPk(idHotel, {
+    include: [
+      {
+        model: Review,
+        attributes: ["id", "name", "rating", "comment", "user"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  });
+  const allReviewsUserId = hotelFinded.Reviews.map((r) => r.dataValues.user);
 
-  if (allReviewsUserId.includes(user)) throw `User ${name} already reviewed this hotel.`
+  if (allReviewsUserId.includes(user)) throw `User ${name} already reviewed this hotel.`;
 
   const reviewCreated = await Review.create({
     name,
