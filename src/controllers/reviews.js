@@ -34,33 +34,46 @@ async function getHotelReviewsById(id) {
   }
 }
 
-async function createReview({ idHotel, name, rating, comment, user }) {
-  const hotelFinded = await Hotel.findByPk(idHotel, {
-    include: [
-      {
-        model: Review,
-        attributes: ["id", "name", "rating", "comment", "user"],
-        through: {
-          attributes: [],
-        },
-      },
-    ],
-  });
-  const allReviewsUserId = hotelFinded.Reviews.map((r) => r.dataValues.user);
-
-  if (allReviewsUserId.includes(user)) throw `User ${name} already reviewed this hotel.`;
-
-  const reviewCreated = await Review.create({
-    name,
-    rating,
-    comment,
-    user,
-  });
-
-  hotelFinded.addReviews(reviewCreated);
-
-  return "Review submitted successfully";
-}
+async function createReview({ idHotel, name, rating, comment, user}){
+  try {
+      let hotelFinded = await Hotel.findByPk(idHotel)
+  
+      let reviewCreated = await Review.create({
+          name:name, 
+          rating:rating, 
+          comment:comment, 
+          user:user
+      })
+  
+      await hotelFinded.addReviews(reviewCreated)
+  
+      let hotelWithReview = await Hotel.findByPk(idHotel,{ include: [{
+          model: Review,
+              attributes: ['id', "name", "rating", "comment", "user"],
+              through: {
+                  attributes: []
+          }
+      }]})
+  
+      let reviewsArray = hotelWithReview.Reviews
+      let i = 0
+      let sum = 0
+      for ( i ; i < reviewsArray.length; i++) {
+          sum = sum + reviewsArray[i].rating
+      }
+      let result = sum / i
+      
+      if(hotelFinded){
+          hotelFinded.qualification = Math.ceil(result)
+      }
+  
+      await hotelFinded.save()
+  
+      return 'Review created'
+  } catch (error) {
+      console.log(error)
+  }
+  }
 
 async function deleteReview(id) {
   await Review.destroy({
