@@ -12,16 +12,13 @@ router.post("/", async (req, res) => {
 
     try {
         const payment = await stripe.paymentIntents.create({
-            amount,
+            amount: amount * 100,
             currency: "USD",
             description:"booking",
             payment_method: id,
             confirm: true, //confirm the payment at the same time
         });
-        console.log(payment);       
-        console.log('---------------------------------------------------');       
-        console.log(payment.charges.data);       
-        return res.json({ message: "Successful Payment", url: payment.charges.data[0].receipt_url });
+        return res.json({ message: "Successful Payment", receipt_url: payment.charges.data[0].receipt_url});
 
     } catch (error) {
         return res.json({ message: error.raw.message });
