@@ -38,13 +38,37 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 
-// const { Recipe , TypeDiet} = sequelize.models;
+const { Hotel , Location, ServicesHotel, ServicesRoom, Room, Event, Booking, Review } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 
-// Recipe.belongsToMany(TypeDiet, {through: 'recipe_typeDiet'})
-// TypeDiet.belongsToMany(Recipe, {through: 'recipe_typeDiet'})
+//UNO A MUCHOS
+// Room.hasMany(CategoryRoom,{foreignKey: "CategoryId"});
+// CategoryRoom.belongsTo(Room);
+
+//MUCHOS A MUCHOS
+
+Hotel.belongsToMany(Review, {through: 'Hotel_Review'})
+Review.belongsToMany(Hotel, {through: 'Hotel_Review'})
+
+Room.belongsToMany(Booking, {through: 'Room_Booking'})
+Booking.belongsToMany(Room, {through: 'Room_Booking'})
+
+Hotel.belongsToMany(Location, {through: 'Hotel_Location'})
+Location.belongsToMany(Hotel, {through: 'Hotel_Location'})
+
+Hotel.belongsToMany(ServicesHotel, {through: 'Hotel_Services'})
+ServicesHotel.belongsToMany(Hotel, {through: 'Hotel_Services'})
+
+Hotel.belongsToMany(Room, {through: 'Hotel_Room'})
+Room.belongsToMany(Hotel, {through: 'Hotel_Room'})
+
+Room.belongsToMany(ServicesRoom, {through: 'Room_Services'})
+ServicesRoom.belongsToMany(Room, {through: 'Room_Services'})
+
+Hotel.belongsToMany(Event,{through: 'Hotel_Event'})
+Event.belongsToMany(Hotel,{through: 'Hotel_Event'})
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
