@@ -23,7 +23,7 @@ const { conn } = require('./src/db.js');
 
 const cors = require("cors");
 
-server.use(cors({ origin: "http://localhost:3000" }))
+server.use(cors({ origin: "https://worlddev-back.onrender.com" }))
 
 
 // Syncing all the models at once.
