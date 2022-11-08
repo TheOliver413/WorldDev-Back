@@ -8,6 +8,7 @@ initializeApp({
     credential: applicationDefault()
 })
 
+
 const db = getFirestore()
 
 module.exports = {
