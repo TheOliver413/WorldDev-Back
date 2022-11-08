@@ -1,13 +1,13 @@
 require('dotenv').config()
+var admin = require("firebase-admin");
+var serviceAccount = require("./world-developer-firebase.json");
 
-const {initializeApp, applicationDefault} = require('firebase-admin/app')
-const {getFirestore} = require('firebase-admin/firestore')
+const { getFirestore } = require('firebase-admin/firestore')
 
 
-initializeApp({
-    credential: applicationDefault()
-})
-
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
 
 const db = getFirestore()
 
